@@ -1,0 +1,312 @@
+/* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #e8e8f0;
+    overflow-x: hidden;
+    position: relative;
+    background: #0a0a0f;
+    min-height: 100vh;
+}
+
+/* Grid de fondo */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(42,42,60,0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(42,42,60,0.5) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -10;
+    pointer-events: none;
+}
+
+/* Glow radial de fondo */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 60% 20%, rgba(16,163,127,0.07) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(83,110,246,0.05) 0%, transparent 45%);
+    z-index: -9;
+    pointer-events: none;
+}
+
+/* =========================
+   DECORACIONES FLOTANTES
+========================= */
+.pc1, .pc2, .pc3, .pc4,
+.keyboard1, .keyboard2, .keyboard3,
+.mouse1, .mouse2, .mouse3 {
+    position: fixed;
+    z-index: -8;
+    pointer-events: none;
+    animation: floatPc 8s ease-in-out infinite alternate;
+}
+
+.pc1, .pc2, .pc3, .pc4 {
+    font-size: 7rem;
+    opacity: 0.07;
+    filter: drop-shadow(0 0 12px rgba(16,163,127,0.3));
+}
+
+.keyboard1, .keyboard2, .keyboard3 {
+    font-size: 5rem;
+    opacity: 0.06;
+    animation-duration: 10s;
+}
+
+.mouse1, .mouse2, .mouse3 {
+    font-size: 4rem;
+    opacity: 0.06;
+    animation-duration: 7s;
+}
+
+.pc1    { top: 15%; right: 6%; }
+.pc2    { bottom: 10%; left: 5%; }
+.pc3    { top: 72%; right: 18%; }
+.pc4    { top: 40%; left: 15%; }
+.keyboard1 { top: 35%; right: 10%; }
+.keyboard2 { bottom: 18%; right: 28%; }
+.keyboard3 { top: 80%; left: 38%; }
+.mouse1 { top: 22%; left: 18%; }
+.mouse2 { bottom: 12%; right: 12%; }
+.mouse3 { top: 70%; left: 70%; }
+
+/* =========================
+   HEADER
+========================= */
+.header {
+    width: 100%;
+    text-align: center;
+    padding: 32px 0;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(42,42,60,0.8);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 10;
+}
+
+.header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(16,163,127,0.4), transparent);
+}
+
+.header h1 {
+    font-size: 3.8rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    color: #e8e8f0;
+    text-shadow: 0 0 40px rgba(16,163,127,0.2);
+}
+
+.header span {
+    color: #10a37f;
+}
+
+/* =========================
+   HERO
+========================= */
+.hero {
+    text-align: center;
+    padding: 90px 20px 70px;
+    position: relative;
+    z-index: 1;
+}
+
+.descripcion {
+    font-size: 1.2rem;
+    color: #7a7a9a;
+    line-height: 1.9;
+    margin-bottom: 52px;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 300;
+}
+
+/* =========================
+   BOTONES
+========================= */
+.botones {
+    display: flex;
+    justify-content: center;
+    max-width: 860px;
+    margin: auto;
+    gap: 20px;
+}
+
+.btn {
+    flex: 1;
+    padding: 36px 20px;
+    font-size: 1.15rem;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 18px;
+    font-weight: 600;
+    transition: transform 0.25s, box-shadow 0.25s;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.btn:hover::before { opacity: 1; }
+
+.izquierda {
+    background: linear-gradient(135deg, #10a37f, #0d7a60);
+    color: #ffffff;
+    box-shadow: 0 8px 30px rgba(16,163,127,0.25);
+    border: 1px solid rgba(16,163,127,0.4);
+}
+.izquierda::before {
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+}
+
+.derecha {
+    background: #12121a;
+    border: 1px solid rgba(42,42,60,0.9);
+    color: #e8e8f0;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.derecha::before {
+    background: linear-gradient(135deg, rgba(83,110,246,0.08), transparent);
+}
+
+.btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+}
+
+/* =========================
+   INFO / CARDS
+========================= */
+.info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 20px 80px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.card {
+    background: #12121a;
+    border: 1px solid rgba(42,42,60,0.9);
+    padding: 30px 28px;
+    border-radius: 18px;
+    width: 260px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(16,163,127,0.4), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.35);
+    border-color: rgba(16,163,127,0.25);
+}
+
+.card:hover::before { opacity: 1; }
+
+.card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e8e8f0;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 0.88rem;
+    color: #7a7a9a;
+    line-height: 1.7;
+    font-weight: 300;
+}
+
+.card:nth-child(2) {
+    background: linear-gradient(135deg, #0d2b22, #12121a);
+    border-color: rgba(16,163,127,0.2);
+}
+
+.card:nth-child(2) h3 { color: #10a37f; }
+
+/* =========================
+   ANIMACIONES
+========================= */
+@keyframes floatPc {
+    0%   { transform: translateY(0px) rotate(-1deg); }
+    100% { transform: translateY(16px) rotate(1deg); }
+}
+
+/* =========================
+   CRUCES Y PALOMAS
+========================= */
+.cruz1, .cruz2, .cruz3, .cruz4,
+.dove1, .dove2, .dove3 {
+    position: fixed;
+    z-index: -8;
+    pointer-events: none;
+    animation: floatPc 6s ease-in-out infinite alternate;
+}
+
+.cruz1, .cruz2, .cruz3, .cruz4 {
+    font-size: 6rem;
+    opacity: 0.05;
+    filter: drop-shadow(0 0 10px rgba(16,163,127,0.2));
+}
+
+.dove1, .dove2, .dove3 {
+    font-size: 5rem;
+    opacity: 0.05;
+    filter: drop-shadow(0 0 10px rgba(16,163,127,0.2));
+    animation-duration: 7s;
+}
+
+.cruz1 { top: 8%;  left: 5%; }
+.cruz2 { bottom: 6%; right: 5%; }
+.cruz3 { top: 65%; left: 40%; }
+.cruz4 { top: 22%; right: 35%; }
+
+.dove1 { top: 12%; left: 28%; }
+.dove2 { top: 55%; right: 12%; }
+.dove3 { bottom: 8%; left: 22%; }
