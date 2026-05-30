@@ -1,7 +1,7 @@
 {
   "name": "bytebuilder-asistente",
   "version": "1.0.0",
-  "description": "Asistente inteligente ByteBuilder con OpenAI",
+  "description": "Asistente inteligente ByteBuilder con Groq",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -11,7 +11,8 @@
     "express": "^4.18.2",
     "dotenv": "^16.3.1",
     "cors": "^2.8.5",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "groq-sdk": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
