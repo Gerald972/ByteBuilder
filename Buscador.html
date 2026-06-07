@@ -2,74 +2,647 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Explorar Computadores</title>
-</head>
-<body>
-
-    <h1>🔍 Explorar Computadores</h1>
-
-    <a href="index.html">
-        <button>Volver al inicio</button>
-    </a>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explorar Computadores</title>
-
+    <title>ByteBuilder — Explorar</title>
     <link rel="stylesheet" href="explorar.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <!-- HEADER -->
     <header class="header">
-        <div class="logo">
-            Byte<span>Builder</span>
-        </div>
+        <a href="index.html" class="logo">Byte<span>Builder</span></a>
+
     </header>
 
-    <section class="buscador-container">
+    <!-- HERO BUSCADOR -->
+    <section class="hero">
+        <div class="hero-badge">CATÁLOGO 2026</div>
+        <h1 class="hero-title">Encuentra tu<br><span>equipo perfecto</span></h1>
+        <p class="hero-sub">Más de 1,200 productos — computadores, componentes y periféricos</p>
 
-        <h1>🔍 Explora computadores</h1>
-
-        <p>
-            Busca el computador ideal según tus necesidades, presupuesto y rendimiento.
-        </p>
-
-        <div class="search-box">
-            <input type="text" placeholder="Buscar computador...">
-            <button>Buscar</button>
-        </div>
-
-        <div class="cards">
-
-            <div class="card">
-                <h3>💻 Gamer</h3>
-                <p>Equipos de alto rendimiento para juegos exigentes.</p>
+        <!-- Barra de búsqueda principal -->
+        <div class="search-wrapper">
+            <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input id="searchInput" type="text" placeholder="Ej: RTX 4070, laptop gaming, procesador AMD..." autocomplete="off">
+                <button class="btn-search" onclick="buscar()">Buscar</button>
             </div>
-
-            <div class="card">
-                <h3>🎨 Diseño</h3>
-                <p>Computadores optimizados para edición y diseño gráfico.</p>
+            <!-- Filtros rápidos -->
+            <div class="quick-filters">
+                <button class="filter-chip active" onclick="filtrar(this, 'todos')">Todos</button>
+                <button class="filter-chip" onclick="filtrar(this, 'gamer')">🎮 Gamer</button>
+                <button class="filter-chip" onclick="filtrar(this, 'diseño')">🎨 Diseño</button>
+                <button class="filter-chip" onclick="filtrar(this, 'estudio')">📚 Estudio</button>
+                <button class="filter-chip" onclick="filtrar(this, 'componente')">⚙️ Componentes</button>
+                <button class="filter-chip" onclick="filtrar(this, 'oferta')">🔥 Ofertas</button>
             </div>
-
-            <div class="card">
-                <h3>📚 Estudio</h3>
-                <p>Laptops ligeros y eficientes para estudiantes.</p>
-            </div>
-
         </div>
-
-        <div class="volver">
-            <a href="index.html">⬅ Volver al inicio</a>
-        </div>
-
     </section>
+
+    <!-- BARRA DE FILTROS AVANZADOS -->
+    <section class="filtros-avanzados">
+        <div class="filtros-inner">
+            <div class="filtro-grupo">
+                <label>Precio</label>
+                <select id="filtroPrecio">
+                    <option value="">Cualquier precio</option>
+                    <option value="0-500">Hasta $500</option>
+                    <option value="500-1000">$500 – $1,000</option>
+                    <option value="1000-2000">$1,000 – $2,000</option>
+                    <option value="2000+">Más de $2,000</option>
+                </select>
+            </div>
+            <div class="filtro-grupo">
+                <label>Marca</label>
+                <select id="filtroMarca">
+                    <option value="">Todas las marcas</option>
+                    <option>AMD</option>
+                    <option>Apple</option>
+                    <option>Acer</option>
+                    <option>ASUS</option>
+                    <option>be quiet</option>
+                    <option>Corsair</option>
+                    <option>Dell</option>
+                    <option>GIGABYTE</option>
+                    <option>GSkill</option>
+                    <option>HP</option>
+                    <option>Intel</option>
+                    <option>Lenovo</option>
+                    <option>Microsoft</option>
+                    <option>MSI</option>
+                    <option>NZXT</option>
+                    <option>Samsung</option>
+                </select>
+            </div>
+            <div class="filtro-grupo">
+                <label>Ordenar por</label>
+                <select id="filtroOrden">
+                    <option value="relevancia">Relevancia</option>
+                    <option value="precio-asc">Precio: Menor a Mayor</option>
+                    <option value="precio-desc">Precio: Mayor a Menor</option>
+                    <option value="nombre">Nombre A–Z</option>
+                </select>
+            </div>
+            <button class="btn-aplicar" onclick="aplicarFiltros()">Aplicar filtros</button>
+        </div>
+    </section>
+
+    <!-- RESULTADOS / CATÁLOGO -->
+    <main class="catalogo">
+
+        <div class="catalogo-header">
+            <p class="resultado-count"><span id="conteo">24</span> productos encontrados</p>
+            <div class="vista-toggle">
+                <button class="vista-btn active" id="btnGrid" onclick="setVista('grid')" title="Cuadrícula">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+                </button>
+                <button class="vista-btn" id="btnLista" onclick="setVista('lista')" title="Lista">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/><rect x="1" y="12" width="14" height="2" rx="1"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid">
+
+            <!-- ===== LAPTOPS GAMER ===== -->
+            <article class="card" data-categoria="gamer" data-precio="1799" data-marca="ASUS" data-nombre="ASUS ROG Strix G16">
+                <div class="card-badge gamer">Gamer</div>
+                <div class="card-img"><div class="card-img-placeholder">💻</div></div>
+                <div class="card-body">
+                    <p class="card-marca">ASUS ROG</p>
+                    <h3 class="card-nombre">Strix G16 Gaming</h3>
+                    <div class="card-specs">
+                        <span>RTX 4070</span><span>Intel i9-13980HX</span><span>32GB DDR5</span><span>1TB NVMe</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$1,799<span class="card-precio-old">$2,099</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card oferta" data-categoria="gamer oferta" data-precio="1199" data-marca="MSI" data-nombre="MSI Katana 15 B13V">
+                <div class="card-badge oferta">🔥 Oferta</div>
+                <div class="card-img"><div class="card-img-placeholder">🎮</div></div>
+                <div class="card-body">
+                    <p class="card-marca">MSI</p>
+                    <h3 class="card-nombre">Katana 15 B13V</h3>
+                    <div class="card-specs">
+                        <span>RTX 4060</span><span>Intel i7-13620H</span><span>16GB DDR5</span><span>512GB NVMe</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$1,199<span class="card-precio-old">$1,499</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="gamer" data-precio="2499" data-marca="ASUS" data-nombre="ASUS ROG Zephyrus G14">
+                <div class="card-badge gamer">Gamer</div>
+                <div class="card-img"><div class="card-img-placeholder">🕹️</div></div>
+                <div class="card-body">
+                    <p class="card-marca">ASUS ROG</p>
+                    <h3 class="card-nombre">Zephyrus G14 2024</h3>
+                    <div class="card-specs">
+                        <span>RX 7600S</span><span>Ryzen 9 8945HS</span><span>32GB DDR5</span><span>1TB NVMe</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$2,499</p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="gamer" data-precio="1649" data-marca="Lenovo" data-nombre="Lenovo Legion Pro 5i">
+                <div class="card-badge gamer">Gamer</div>
+                <div class="card-img"><div class="card-img-placeholder">⚔️</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Lenovo</p>
+                    <h3 class="card-nombre">Legion Pro 5i Gen 9</h3>
+                    <div class="card-specs">
+                        <span>RTX 4070</span><span>Intel i7-14700HX</span><span>16GB DDR5</span><span>512GB NVMe</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$1,649<span class="card-precio-old">$1,849</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== LAPTOPS DISEÑO ===== -->
+            <article class="card" data-categoria="diseño" data-precio="2399" data-marca="Apple" data-nombre="Apple MacBook Pro M3 Pro">
+                <div class="card-badge diseño">Diseño</div>
+                <div class="card-img"><div class="card-img-placeholder">🍎</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Apple</p>
+                    <h3 class="card-nombre">MacBook Pro M3 Pro 14"</h3>
+                    <div class="card-specs">
+                        <span>Chip M3 Pro</span><span>18GB Unified</span><span>512GB SSD</span><span>14" Liquid Retina</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$2,399</p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card oferta" data-categoria="diseño oferta" data-precio="1499" data-marca="Dell" data-nombre="Dell XPS 15 OLED">
+                <div class="card-badge oferta">🔥 Oferta</div>
+                <div class="card-img"><div class="card-img-placeholder">🎨</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Dell</p>
+                    <h3 class="card-nombre">XPS 15 OLED</h3>
+                    <div class="card-specs">
+                        <span>RTX 4060</span><span>Intel i7-13700H</span><span>32GB DDR5</span><span>15.6" 3.5K OLED</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$1,499<span class="card-precio-old">$1,799</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="diseño" data-precio="1899" data-marca="Microsoft" data-nombre="Microsoft Surface Studio 2+">
+                <div class="card-badge diseño">Diseño</div>
+                <div class="card-img"><div class="card-img-placeholder">🖌️</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Microsoft</p>
+                    <h3 class="card-nombre">Surface Laptop Studio 2</h3>
+                    <div class="card-specs">
+                        <span>RTX 4060</span><span>Intel i7-13700H</span><span>32GB LPDDR5</span><span>14.4" 2400x1600</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$1,899</p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== LAPTOPS ESTUDIO ===== -->
+            <article class="card" data-categoria="estudio" data-precio="649" data-marca="HP" data-nombre="HP Pavilion 15">
+                <div class="card-badge estudio">Estudio</div>
+                <div class="card-img"><div class="card-img-placeholder">📘</div></div>
+                <div class="card-body">
+                    <p class="card-marca">HP</p>
+                    <h3 class="card-nombre">Pavilion 15 Student</h3>
+                    <div class="card-specs">
+                        <span>Ryzen 5 7520U</span><span>16GB DDR5</span><span>512GB SSD</span><span>15.6" FHD</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$649<span class="card-precio-old">$749</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card oferta" data-categoria="estudio oferta" data-precio="449" data-marca="Lenovo" data-nombre="Lenovo IdeaPad Slim 5">
+                <div class="card-badge oferta">🔥 Oferta</div>
+                <div class="card-img"><div class="card-img-placeholder">📚</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Lenovo</p>
+                    <h3 class="card-nombre">IdeaPad Slim 5</h3>
+                    <div class="card-specs">
+                        <span>Ryzen 7 7730U</span><span>16GB DDR4</span><span>512GB SSD</span><span>14" FHD IPS</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$449<span class="card-precio-old">$599</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="estudio" data-precio="599" data-marca="Acer" data-nombre="Acer Swift Go 14">
+                <div class="card-badge estudio">Estudio</div>
+                <div class="card-img"><div class="card-img-placeholder">🎓</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Acer</p>
+                    <h3 class="card-nombre">Swift Go 14 OLED</h3>
+                    <div class="card-specs">
+                        <span>Intel Core Ultra 5</span><span>16GB LPDDR5</span><span>512GB SSD</span><span>14" 2.8K OLED</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$599</p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== TARJETAS GRÁFICAS ===== -->
+            <article class="card" data-categoria="componente" data-precio="734" data-marca="ASUS" data-nombre="ASUS RTX 4070 Super">
+                <div class="card-badge componente">GPU</div>
+                <div class="card-img"><div class="card-img-placeholder">⚡</div></div>
+                <div class="card-body">
+                    <p class="card-marca">ASUS</p>
+                    <h3 class="card-nombre">RTX 4070 Super 12GB</h3>
+                    <div class="card-specs">
+                        <span>12GB GDDR6X</span><span>DLSS 3.5</span><span>Ray Tracing</span><span>PCIe 4.0</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$734<span class="card-precio-old">$799</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="componente" data-precio="543" data-marca="ASUS" data-nombre="ASUS RTX 5070 Prime">
+                <div class="card-badge componente">GPU</div>
+                <div class="card-img"><div class="card-img-placeholder">🔵</div></div>
+                <div class="card-body">
+                    <p class="card-marca">ASUS Prime</p>
+                    <h3 class="card-nombre">RTX 5070 12GB GDDR7</h3>
+                    <div class="card-specs">
+                        <span>12GB GDDR7</span><span>DLSS 4</span><span>PCIe 5.0</span><span>192-bit</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$543<span class="card-precio-old">$549</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card oferta" data-categoria="componente oferta" data-precio="449" data-marca="AMD" data-nombre="AMD Radeon RX 9070">
+                <div class="card-badge oferta">🔥 Oferta</div>
+                <div class="card-img"><div class="card-img-placeholder">🔴</div></div>
+                <div class="card-body">
+                    <p class="card-marca">AMD</p>
+                    <h3 class="card-nombre">Radeon RX 9070 16GB</h3>
+                    <div class="card-specs">
+                        <span>16GB GDDR6</span><span>RDNA 4</span><span>Ray Tracing</span><span>PCIe 5.0</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$449<span class="card-precio-old">$499</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== PROCESADORES ===== -->
+            <article class="card" data-categoria="componente" data-precio="469" data-marca="AMD" data-nombre="AMD Ryzen 7 9800X3D">
+                <div class="card-badge componente">CPU</div>
+                <div class="card-img"><div class="card-img-placeholder">🔧</div></div>
+                <div class="card-body">
+                    <p class="card-marca">AMD</p>
+                    <h3 class="card-nombre">Ryzen 7 9800X3D</h3>
+                    <div class="card-specs">
+                        <span>8 núcleos / 16 hilos</span><span>5.7GHz Boost</span><span>3D V-Cache</span><span>Socket AM5</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$469<span class="card-precio-old">$499</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="componente" data-precio="324" data-marca="AMD" data-nombre="AMD Ryzen 9 7900X">
+                <div class="card-badge componente">CPU</div>
+                <div class="card-img"><div class="card-img-placeholder">🧠</div></div>
+                <div class="card-body">
+                    <p class="card-marca">AMD</p>
+                    <h3 class="card-nombre">Ryzen 9 7900X</h3>
+                    <div class="card-specs">
+                        <span>12 núcleos / 24 hilos</span><span>5.6GHz Boost</span><span>170W TDP</span><span>Socket AM5</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$324<span class="card-precio-old">$549</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="componente" data-precio="464" data-marca="Intel" data-nombre="Intel Core i9-14900K">
+                <div class="card-badge componente">CPU</div>
+                <div class="card-img"><div class="card-img-placeholder">💡</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Intel</p>
+                    <h3 class="card-nombre">Core i9-14900K</h3>
+                    <div class="card-specs">
+                        <span>24 núcleos (8P+16E)</span><span>6.0GHz Boost</span><span>125W TDP</span><span>Socket LGA1700</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$464</p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="componente" data-precio="195" data-marca="AMD" data-nombre="AMD Ryzen 5 7600X">
+                <div class="card-badge componente">CPU</div>
+                <div class="card-img"><div class="card-img-placeholder">⚙️</div></div>
+                <div class="card-body">
+                    <p class="card-marca">AMD</p>
+                    <h3 class="card-nombre">Ryzen 5 7600X</h3>
+                    <div class="card-specs">
+                        <span>6 núcleos / 12 hilos</span><span>5.3GHz Boost</span><span>105W TDP</span><span>Socket AM5</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$195<span class="card-precio-old">$229</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== ALMACENAMIENTO ===== -->
+            <article class="card" data-categoria="componente" data-precio="150" data-marca="Samsung" data-nombre="Samsung 990 Pro 2TB">
+                <div class="card-badge componente">SSD</div>
+                <div class="card-img"><div class="card-img-placeholder">💾</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Samsung</p>
+                    <h3 class="card-nombre">990 Pro NVMe 2TB</h3>
+                    <div class="card-specs">
+                        <span>7,450 MB/s Lectura</span><span>PCIe 4.0 x4</span><span>NVMe 2.0</span><span>M.2 2280</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$149<span class="card-precio-old">$229</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="componente" data-precio="230" data-marca="Samsung" data-nombre="Samsung 9100 Pro 2TB">
+                <div class="card-badge componente">SSD</div>
+                <div class="card-img"><div class="card-img-placeholder">🚀</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Samsung</p>
+                    <h3 class="card-nombre">9100 Pro NVMe 2TB</h3>
+                    <div class="card-specs">
+                        <span>14,800 MB/s Lectura</span><span>PCIe 5.0 x4</span><span>NVMe 2.0</span><span>M.2 2280</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$229</p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== RAM ===== -->
+            <article class="card" data-categoria="componente" data-precio="100" data-marca="Corsair" data-nombre="Corsair Vengeance DDR5 32GB">
+                <div class="card-badge componente">RAM</div>
+                <div class="card-img"><div class="card-img-placeholder">🧩</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Corsair</p>
+                    <h3 class="card-nombre">Vengeance RGB 32GB DDR5</h3>
+                    <div class="card-specs">
+                        <span>2×16GB</span><span>DDR5-6400</span><span>CL36</span><span>RGB</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$99<span class="card-precio-old">$125</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="componente" data-precio="150" data-marca="GSkill" data-nombre="GSkill Trident Z5 Neo 32GB">
+                <div class="card-badge componente">RAM</div>
+                <div class="card-img"><div class="card-img-placeholder">🎯</div></div>
+                <div class="card-body">
+                    <p class="card-marca">G.Skill</p>
+                    <h3 class="card-nombre">Trident Z5 Neo 32GB DDR5</h3>
+                    <div class="card-specs">
+                        <span>2×16GB</span><span>DDR5-6000</span><span>AMD EXPO</span><span>CL38 RGB</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$149</p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== MOTHERBOARDS ===== -->
+            <article class="card" data-categoria="componente" data-precio="290" data-marca="GIGABYTE" data-nombre="GIGABYTE X870 AORUS Elite">
+                <div class="card-badge componente">Motherboard</div>
+                <div class="card-img"><div class="card-img-placeholder">🔌</div></div>
+                <div class="card-body">
+                    <p class="card-marca">GIGABYTE</p>
+                    <h3 class="card-nombre">X870 AORUS Elite WiFi 7</h3>
+                    <div class="card-specs">
+                        <span>Socket AM5</span><span>DDR5</span><span>PCIe 5.0</span><span>4×M.2, USB4</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$289<span class="card-precio-old">$319</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="componente" data-precio="350" data-marca="ASUS" data-nombre="ASUS ROG Strix Z790-F">
+                <div class="card-badge componente">Motherboard</div>
+                <div class="card-img"><div class="card-img-placeholder">🛠️</div></div>
+                <div class="card-body">
+                    <p class="card-marca">ASUS ROG</p>
+                    <h3 class="card-nombre">ROG Strix Z790-F Gaming</h3>
+                    <div class="card-specs">
+                        <span>Socket LGA1700</span><span>DDR5</span><span>PCIe 5.0</span><span>5×M.2, Thunderbolt 4</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$349</p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== FUENTES DE PODER ===== -->
+            <article class="card" data-categoria="componente" data-precio="170" data-marca="Corsair" data-nombre="Corsair RM1000e 1000W">
+                <div class="card-badge componente">PSU</div>
+                <div class="card-img"><div class="card-img-placeholder">🔋</div></div>
+                <div class="card-body">
+                    <p class="card-marca">Corsair</p>
+                    <h3 class="card-nombre">RM1000e 1000W ATX 3.1</h3>
+                    <div class="card-specs">
+                        <span>1000W</span><span>80+ Gold</span><span>Full Modular</span><span>PCIe 5.1</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$169<span class="card-precio-old">$189</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ===== REFRIGERACIÓN ===== -->
+            <article class="card" data-categoria="componente" data-precio="120" data-marca="NZXT" data-nombre="NZXT Kraken 240 AIO">
+                <div class="card-badge componente">Cooling</div>
+                <div class="card-img"><div class="card-img-placeholder">❄️</div></div>
+                <div class="card-body">
+                    <p class="card-marca">NZXT</p>
+                    <h3 class="card-nombre">Kraken 240 Elite LCD</h3>
+                    <div class="card-specs">
+                        <span>240mm Radiador</span><span>LCD 2.72"</span><span>LGA1700 / AM5</span><span>2×120mm fans</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$119<span class="card-precio-old">$139</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" data-categoria="componente" data-precio="89" data-marca="be quiet" data-nombre="be quiet Dark Rock Pro 5">
+                <div class="card-badge componente">Cooling</div>
+                <div class="card-img"><div class="card-img-placeholder">🌀</div></div>
+                <div class="card-body">
+                    <p class="card-marca">be quiet!</p>
+                    <h3 class="card-nombre">Dark Rock Pro 5</h3>
+                    <div class="card-specs">
+                        <span>280W TDP</span><span>Dual Tower</span><span>LGA1851 / AM5</span><span>Silent Wings fans</span>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-precio">$89<span class="card-precio-old">$109</span></p>
+                        <button class="btn-ver">Ver más →</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Sin resultados -->
+        <div class="sin-resultados hidden" id="sinResultados">
+            <p>😕</p>
+            <h3>Sin resultados</h3>
+            <p>Intenta con otro término o ajusta los filtros.</p>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 ByteBuilder — Todos los derechos reservados</p>
+        <a href="index.html">⬅ Volver al inicio</a>
+    </footer>
+
+    <script>
+        // --- BÚSQUEDA ---
+        document.getElementById('searchInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') buscar();
+        });
+
+        function buscar() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.card');
+            let visibles = 0;
+
+            cards.forEach(card => {
+                const nombre = card.dataset.nombre.toLowerCase();
+                const marca = card.dataset.marca.toLowerCase();
+                const specs = card.querySelector('.card-specs').textContent.toLowerCase();
+                const match = !query || nombre.includes(query) || marca.includes(query) || specs.includes(query);
+                card.style.display = match ? '' : 'none';
+                if (match) visibles++;
+            });
+
+            actualizarConteo(visibles);
+        }
+
+        // --- FILTROS DE CATEGORÍA ---
+        function filtrar(btn, categoria) {
+            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const cards = document.querySelectorAll('.card');
+            let visibles = 0;
+
+            cards.forEach(card => {
+                const cats = card.dataset.categoria || '';
+                const match = categoria === 'todos' || cats.includes(categoria);
+                card.style.display = match ? '' : 'none';
+                if (match) visibles++;
+            });
+
+            actualizarConteo(visibles);
+        }
+
+        // --- FILTROS AVANZADOS ---
+        function aplicarFiltros() {
+            const precio = document.getElementById('filtroPrecio').value;
+            const marca = document.getElementById('filtroMarca').value.toLowerCase();
+            const orden = document.getElementById('filtroOrden').value;
+            const cards = Array.from(document.querySelectorAll('.card'));
+            let visibles = 0;
+
+            cards.forEach(card => {
+                const cardPrecio = parseFloat(card.dataset.precio);
+                const cardMarca = card.dataset.marca.toLowerCase();
+                let show = true;
+
+                if (marca && !cardMarca.includes(marca)) show = false;
+
+                if (precio && show) {
+                    if (precio === '0-500' && cardPrecio > 500) show = false;
+                    else if (precio === '500-1000' && (cardPrecio < 500 || cardPrecio > 1000)) show = false;
+                    else if (precio === '1000-2000' && (cardPrecio < 1000 || cardPrecio > 2000)) show = false;
+                    else if (precio === '2000+' && cardPrecio < 2000) show = false;
+                }
+
+                card.style.display = show ? '' : 'none';
+                if (show) visibles++;
+            });
+
+            // Ordenar
+            const grid = document.getElementById('cardsGrid');
+            const visibleCards = cards.filter(c => c.style.display !== 'none');
+            visibleCards.sort((a, b) => {
+                if (orden === 'precio-asc') return parseFloat(a.dataset.precio) - parseFloat(b.dataset.precio);
+                if (orden === 'precio-desc') return parseFloat(b.dataset.precio) - parseFloat(a.dataset.precio);
+                if (orden === 'nombre') return a.dataset.nombre.localeCompare(b.dataset.nombre);
+                return 0;
+            });
+            visibleCards.forEach(c => grid.appendChild(c));
+
+            actualizarConteo(visibles);
+        }
+
+        function actualizarConteo(n) {
+            document.getElementById('conteo').textContent = n;
+            document.getElementById('sinResultados').classList.toggle('hidden', n > 0);
+        }
+
+        // --- VISTA GRID / LISTA ---
+        function setVista(tipo) {
+            const grid = document.getElementById('cardsGrid');
+            document.getElementById('btnGrid').classList.toggle('active', tipo === 'grid');
+            document.getElementById('btnLista').classList.toggle('active', tipo === 'lista');
+            grid.classList.toggle('vista-lista', tipo === 'lista');
+        }
+    </script>
 
 </body>
 </html>
