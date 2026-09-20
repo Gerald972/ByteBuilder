@@ -203,16 +203,6 @@ body::after {
     background: linear-gradient(135deg, rgba(83,110,246,0.08), transparent);
 }
 
-.centro {
-    background: #12121a;
-    border: 1px solid rgba(42,42,60,0.9);
-    color: #e8e8f0;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-}
-.centro::before {
-    background: linear-gradient(135deg, rgba(16,163,127,0.08), transparent);
-}
-
 .btn:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow: 0 16px 40px rgba(0,0,0,0.3);
